@@ -15,7 +15,7 @@ elif [[ $state =~ "$stopping" ]]; then
   do
     date;
     sleep 3;
-    state=$(aws workspaces describe-workspaces --profile us-dev | grep State);
+    state=$(aws workspaces describe-workspaces --profile aws.cmd.user | grep State);
     echo "State: $state";
     if [[ $state =~ "$stopped" ]]; then
       echo "instance is stopped: $state";
@@ -33,7 +33,7 @@ elif [[ $state =~ "$available" ]]; then
   do
     date;
     sleep 3;
-    state=$(aws workspaces describe-workspaces --profile us-dev | grep State);
+    state=$(aws workspaces describe-workspaces --profile aws.cmd.user | grep State);
     echo "State: $state";
     if [[ $state =~ "$stopped" ]]; then
       echo "instance is stopped: $state";
