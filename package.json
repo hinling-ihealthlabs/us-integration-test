@@ -1,0 +1,24 @@
+{
+  "name": "us-integration-test",
+  "version": "1.0.0",
+  "description": "nurse app intergration tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "webdriverio": "^4.8.0"
+  },
+  "devDependencies": {
+    "wdio-allure-reporter": "^0.1.2",
+    "wdio-appium-service": "^0.2.3",
+    "wdio-dot-reporter": "0.0.8",
+    "wdio-json-reporter": "^0.2.1",
+    "wdio-junit-reporter": "^0.3.0",
+    "wdio-mocha-framework": "^0.5.10",
+    "wdio-selenium-standalone-service": "0.0.9",
+    "wdio-spec-reporter": "^0.1.0"
+  }
+}
