@@ -8,4 +8,11 @@ exports.config = Object.assign(base.config, {
     //browserName: 'internet explorer'
   }],
   baseUrl: 'http://web.bettercare.dev.ihealthnext.com',
+  reporters: ['spec', 'junit'],
+  reporterOptions: {
+    outputDir: './results',
+    outputFileFormat: function(opts) { // optional
+      return `results.${opts.capabilities}.${opts.cid}.xml`
+    }
+  },
 });
