@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 ## get status of the instance
-state=$(aws workspaces describe-workspaces --profile us-dev | grep State);
+##profile="aws.cmd.user";
+state=$(aws workspaces describe-workspaces --profile aws.cmd.user | grep State);
 available="AVAILABLE";
 stopped="STOPPED";
 stopping="STOPPING";
@@ -17,7 +18,7 @@ elif [[ $state =~ "$stopped" ]]; then ## if State is stopped, start the workspac
     do
       date;
       sleep 3;
-      state=$(aws workspaces describe-workspaces --profile us-dev | grep State);
+      state=$(aws workspaces describe-workspaces --profile aws.cmd.user | grep State);
       echo "State: $state";
       if [[ $state =~ "$available" ]]; then
         echo "instance is available: $state";
@@ -34,7 +35,7 @@ elif [[ $state =~ "$stopping" ]]; then ## if State is stopping, wait for it to b
     do
       date;
       sleep 3;
-      state=$(aws workspaces describe-workspaces --profile us-dev | grep State);
+      state=$(aws workspaces describe-workspaces --profile aws.cmd.user | grep State);
       echo "State: $state";
       if [[ $state =~ "$stopped" ]]; then
         echo "instance is stopped: $state";
@@ -49,7 +50,7 @@ elif [[ $state =~ "$stopping" ]]; then ## if State is stopping, wait for it to b
    do
      date;
      sleep 3;
-     state=$(aws workspaces describe-workspaces --profile us-dev | grep State);
+     state=$(aws workspaces describe-workspaces --profile aws.cmd.user | grep State);
      echo "State: $state";
      if [[ $state =~ "$available" ]]; then
         echo "instance is available. we can start our tests: $state";
