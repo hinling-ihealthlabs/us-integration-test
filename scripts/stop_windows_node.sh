@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ## get status of the instance
-state=$(aws workspaces describe-workspaces --profile us-dev | grep State);
+state=$(aws workspaces describe-workspaces --profile aws.cmd.user | grep State);
 available="AVAILABLE";
 stopped="STOPPED";
 stopping="STOPPING";
@@ -28,7 +28,7 @@ elif [[ $state =~ "$stopping" ]]; then
   fi
 elif [[ $state =~ "$available" ]]; then
   echo "instance state is $state, stopping it now";
-  aws workspaces stop-workspaces --stop-workspace-requests WorkspaceId=ws-7wcdrl9h4 --profile us-dev;
+  aws workspaces stop-workspaces --stop-workspace-requests WorkspaceId=ws-7wcdrl9h4 --profile aws.cmd.user;
   for i in `seq 100`
   do
     date;
