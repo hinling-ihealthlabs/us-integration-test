@@ -13,6 +13,16 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
     browser.setValue('input[name="username"]', 'doctor');
     browser.setValue('input[name="password"]', 'Melissa1');
     browser.click("button=Submit");
+    browser.pause(1000);
+    let unknownError = browser.isExisting("div.tmpl-pop-up.overlay.pad.center");
+    console.log("============> unknownError: ", unknownError);
+    if (unknownError) {
+      // reload the home and login again
+      browser.reload();
+      browser.setValue('input[name="username"]', 'doctor');
+      browser.setValue('input[name="password"]', 'Melissa1');
+      browser.click("button=Submit");
+    }
     browser.waitForExist("div*=Show All Patients", Constants.wait);
   });
 
