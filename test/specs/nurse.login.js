@@ -1,7 +1,11 @@
 const {_, assert, Constants} = require('../utils');
 
 describe('NA-16 -- login as nurse and check patient details page', function(){
-  this.retries(1);
+  let username = process.env.DOC_USER;
+  let password = process.env.DOC_PASSWORD;
+
+  console.log("====================> env: ", process.env);
+  console.log("====================> DOC_USER:", process.env.DOC_USER);
 
   it('Go home page', function(){
     browser.url('/');
@@ -10,17 +14,18 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
   });
 
   it('enter nurse username and password', function(){
-    browser.setValue('input[name="username"]', 'doctor');
-    browser.setValue('input[name="password"]', 'Melissa1');
+    browser.setValue('input[name="username"]', username);
+    browser.setValue('input[name="password"]', password);
     browser.click("button=Submit");
     browser.pause(1000);
     let unknownError = browser.isExisting("div.tmpl-pop-up.overlay.pad.center");
     console.log("============> unknownError: ", unknownError);
     if (unknownError) {
+      console.log("================> ran into redis connection error, reload the page to reconnect...");
       // reload the home and login again
       browser.reload();
-      browser.setValue('input[name="username"]', 'doctor');
-      browser.setValue('input[name="password"]', 'Melissa1');
+      browser.setValue('input[name="username"]', username);
+      browser.setValue('input[name="password"]', password);
       browser.click("button=Submit");
     }
     browser.waitForExist("div*=Show All Patients", Constants.wait);
