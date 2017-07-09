@@ -14,32 +14,37 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
   });
 
   it('enter nurse username and password', function(){
-    browser.setValue('input[name="username"]', username);
-    browser.setValue('input[name="password"]', password);
+    browser.setValue('input[id="username"]', username);
+    browser.setValue('input[id="password"]', password);
     browser.click("button=Submit");
-    browser.pause(1000);
-    let unknownError = browser.isExisting("div.tmpl-pop-up.overlay.pad.center");
-    console.log("============> unknownError: ", unknownError);
-    if (unknownError) {
-      console.log("================> ran into redis connection error, reload the page to reconnect...");
-      // reload the home and login again
-      browser.reload();
-      browser.setValue('input[name="username"]', username);
-      browser.setValue('input[name="password"]', password);
+    console.log("=============> Show all Patients", browser.isVisible('div*=Show All Patients'));
+    let showAllPatients = browser.isVisible('div*=Show All Patients');
+    if (showAllPatients === false) {
+      console.log("==========> reloading...");
+      browser.execute(function(){
+        return location.reload();
+      });
+      browser.pause(2000);
+      browser.waitForExist('input[id="username"]', Constants.wait);
+      browser.setValue('input[id="username"]', username);
+      browser.setValue('input[id="password"]', password);
       browser.click("button=Submit");
     }
     browser.waitForExist("div*=Show All Patients", Constants.wait);
+
   });
 
   it('click the first patient on the right side patient nav bar', function(){
     browser.waitForExist("div#left-nav-content a.item", Constants.wait);
     ele = browser.elements('div#left-nav-content a.item').value;
     ele[0].click();
-    browser.waitForExist("div.edit-save-button");
+    browser.waitForExist("button.edit-save-button");
   });
 
   it('check Medicare Id, name, age, birthday, phone, address, notes, diagnosis & care plan, latest measurements, and alerts', function(){
-    let content = browser.getText("div.user-header-profile");
+    console.log("==========================> inside getText block");
+    browser.waitForExist("h2.edit-save-button-container");
+    let content = browser.getText(".user-header-profile");
     assert.include(content, 'Medicare ID', "Medicare ID field is included");
     assert.include(content, 'years old', "age is included");
     assert.include(content, 'Born on', "birthday is included");
