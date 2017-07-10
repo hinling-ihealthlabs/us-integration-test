@@ -24,7 +24,7 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
       browser.execute(function(){
         return location.reload();
       });
-      browser.pause(2000);
+      browser.pause(6000);
       browser.waitForExist('input[id="username"]', Constants.wait);
       browser.setValue('input[id="username"]', username);
       browser.setValue('input[id="password"]', password);
