@@ -12,6 +12,7 @@
     "chai": "^4.0.2",
     "dotenv": "^4.0.0",
     "wdio": "^0.3.3",
+    "wdio-firefox-profile-service": "0.0.3",
     "webdriverio": "^4.8.0"
   },
   "devDependencies": {

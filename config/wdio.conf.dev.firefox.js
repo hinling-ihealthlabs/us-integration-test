@@ -4,7 +4,11 @@ exports.config = Object.assign(base.config, {
   host: '52.41.120.147',
   port: 32768,
   capabilities: [{
-    browserName: 'firefox'
+    browserName: 'firefox',
+    firefox_profile: {
+      'security.insecure_password.ui.enabled': false,
+      'security.insecure_field_warning.contextual.enabled': false
+    }
   }],
   baseUrl: 'http://web.bettercare.dev.ihealthnext.com',
   reporters: ['spec', 'junit'],
