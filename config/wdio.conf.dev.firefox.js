@@ -2,7 +2,7 @@
 const base = require('./wdio.conf.base.js');
 exports.config = Object.assign(base.config, {
   host: '52.41.120.147',
-  port: 32768,
+  port: 32769,
   capabilities: [{
     browserName: 'firefox',
     firefox_profile: 'default'
