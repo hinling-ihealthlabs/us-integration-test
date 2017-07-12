@@ -5,10 +5,7 @@ exports.config = Object.assign(base.config, {
   port: 32768,
   capabilities: [{
     browserName: 'firefox',
-    firefox_profile: {
-      'security.insecure_password.ui.enabled': false,
-      'security.insecure_field_warning.contextual.enabled': false
-    }
+    firefox_profile: 'default'
   }],
   baseUrl: 'http://web.bettercare.dev.ihealthnext.com',
   reporters: ['spec', 'junit'],
