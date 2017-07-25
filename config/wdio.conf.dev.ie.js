@@ -4,7 +4,6 @@ exports.config = Object.assign(base.config, {
   host: '52.41.120.147',
   port: 32769,
   capabilities: [{
-    //browserName: 'firefox'
     browserName: 'internet explorer',
     requireWindowFocus: true
   }],

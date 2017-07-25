@@ -3,7 +3,7 @@ const assert = require('chai').assert;
 require('dotenv').config();
 
 const Constants = {
-  wait : 20000
+  wait : 30000
 };
 
 module.exports = {

@@ -6,6 +6,10 @@ exports.config = Object.assign(base.config, {
   capabilities: [{
       browserName: 'firefox',
       firefox_profile: 'default'
+    },
+    {
+      browserName: 'internet explorer',
+      requireWindowFocus: true
     }
   ],
   baseUrl: 'http://web.bettercare.dev.ihealthnext.com',
