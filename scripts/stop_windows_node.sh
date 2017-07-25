@@ -44,6 +44,19 @@ elif [[ $state =~ "$available" ]]; then
     echo "instance is not stopping after 5 mins wait, non-zero exit: $state";
     exit -1;
   fi
+elif [[ $state =~ "$starting" ]]; then
+  echo "instance state is $state, just wait for the state to become available...";
+  for i in `seq 100`
+  do
+    date;
+    sleep 3;
+    state=$(aws workspaces describe-workspaces --profile us.dev.aws.cmd.user | grep State);
+    echo "State: $state";
+    if [[ $state =~ "$available" ]]; then
+      echo "instance is available now: $state. just keep it running for now";
+      break;
+    fi
+  done
 else
   echo "not a state that I understand, not doing anything: $state";
   exit -1;
