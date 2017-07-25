@@ -18,18 +18,6 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
     browser.setValue('input[id="password"]', password);
     browser.click("button=Submit");
     console.log("=============> Show all Patients", browser.isVisible('div*=Show All Patients'));
-    let showAllPatients = browser.isVisible('div*=Show All Patients');
-    if (showAllPatients === false) {
-      console.log("==========> reloading...");
-      browser.execute(function(){
-        return location.reload();
-      });
-      browser.pause(6000);
-      browser.waitForExist('input[id="username"]', Constants.wait);
-      browser.setValue('input[id="username"]', username);
-      browser.setValue('input[id="password"]', password);
-      browser.click("button=Submit");
-    }
     browser.waitForExist("div*=Show All Patients", Constants.wait);
 
   });
@@ -62,6 +50,11 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
     assert.include(latestMeasurementsCard, 'Body Weight', "Body Weight is included");
     assert.include(latestMeasurementsCard, 'Pulse Oximeter', "Pulse Oximeter is included");
     assert.include(latestMeasurementsCard, 'Heart Rate', "Heart Rate is included");
+  });
+
+  it('logout user', function() {
+    browser.elements('div.text').value[2].click();
+    browser.click('a=Sign out');
   });
 
 });

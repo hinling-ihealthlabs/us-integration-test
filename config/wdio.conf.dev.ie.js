@@ -5,7 +5,8 @@ exports.config = Object.assign(base.config, {
   port: 32769,
   capabilities: [{
     //browserName: 'firefox'
-    browserName: 'internet explorer'
+    browserName: 'internet explorer',
+    requireWindowFocus: true
   }],
   baseUrl: 'http://web.bettercare.dev.ihealthnext.com',
   reporters: ['spec', 'junit'],
