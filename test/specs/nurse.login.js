@@ -18,6 +18,17 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
     browser.setValue('input[id="password"]', password);
     browser.click("button=Submit");
     console.log("=============> Show all Patients", browser.isVisible('div*=Show All Patients'));
+    browser.pause(8000);
+    if (browser.isVisible('div*=Show All Patients') === false) {
+      console.log("==========> reloading...");
+      browser.execute(function(){
+        return location.reload();
+      });
+      browser.pause(3000);
+      browser.setValue('input[id="username"]', username);
+      browser.setValue('input[id="password"]', password);
+      browser.click("button=Submit");
+    }
     browser.waitForExist("div*=Show All Patients", Constants.wait);
 
   });
