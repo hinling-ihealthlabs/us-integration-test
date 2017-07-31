@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 ## get status of the instance
-##profile="aws.cmd.user";
-state=$(aws workspaces describe-workspaces --profile us.dev.aws.cmd.user | grep State);
+profile=$1;
+echo "aws profile being used: $profile";
+state=$(aws workspaces describe-workspaces --profile $profile | grep State);
 available="AVAILABLE";
 stopped="STOPPED";
 stopping="STOPPING";
@@ -12,13 +13,13 @@ if [[ $state =~ "$available" ]]; then
    echo "windows node is running already, no need to start: $state";
    exit 0;
 elif [[ $state =~ "$stopped" ]]; then ## if State is stopped, start the workspace instance
-   aws workspaces start-workspaces --start-workspace-requests WorkspaceId=ws-7wcdrl9h4 --profile us.dev.aws.cmd.user;
+   aws workspaces start-workspaces --start-workspace-requests WorkspaceId=ws-7wcdrl9h4 --profile $profile;
    ## wait for the State to change to Available for 5 mins
    for i in `seq 100`
     do
       date;
       sleep 3;
-      state=$(aws workspaces describe-workspaces --profile us.dev.aws.cmd.user | grep State);
+      state=$(aws workspaces describe-workspaces --profile $profile | grep State);
       echo "State: $state";
       if [[ $state =~ "$available" ]]; then
         echo "instance is available: $state";
@@ -35,7 +36,7 @@ elif [[ $state =~ "$stopping" ]]; then ## if State is stopping, wait for it to b
     do
       date;
       sleep 3;
-      state=$(aws workspaces describe-workspaces --profile us.dev.aws.cmd.user | grep State);
+      state=$(aws workspaces describe-workspaces --profile $profile | grep State);
       echo "State: $state";
       if [[ $state =~ "$stopped" ]]; then
         echo "instance is stopped: $state";
@@ -44,13 +45,13 @@ elif [[ $state =~ "$stopping" ]]; then ## if State is stopping, wait for it to b
     done
    ## now start the instance
    sleep 2;
-   aws workspaces start-workspaces --start-workspace-requests WorkspaceId=ws-7wcdrl9h4 --profile us.dev.aws.cmd.user;
+   aws workspaces start-workspaces --start-workspace-requests WorkspaceId=ws-7wcdrl9h4 --profile $profile;
    ## wait for the State to change to Available
    for i in `seq 100`
    do
      date;
      sleep 3;
-     state=$(aws workspaces describe-workspaces --profile us.dev.aws.cmd.user | grep State);
+     state=$(aws workspaces describe-workspaces --profile $profile | grep State);
      echo "State: $state";
      if [[ $state =~ "$available" ]]; then
         echo "instance is available. we can start our tests: $state";

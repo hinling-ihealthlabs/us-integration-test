@@ -14,20 +14,43 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
   });
 
   it('enter nurse username and password', function(){
+    browser.saveScreenshot('./screenshots/ie.before.everything.png');
     browser.setValue('input[id="username"]', username);
     browser.setValue('input[id="password"]', password);
+    browser.saveScreenshot('./screenshots/ie.login.png');
     browser.click("button=Submit");
+    browser.saveScreenshot('./screenshots/ie.aftersubmit.png');
+    browser.pause(10000);
     console.log("=============> Show all Patients", browser.isVisible('div*=Show All Patients'));
-    browser.pause(8000);
     if (browser.isVisible('div*=Show All Patients') === false) {
       console.log("==========> reloading...");
-      browser.execute(function(){
-        return location.reload();
-      });
-      browser.pause(3000);
-      browser.setValue('input[id="username"]', username);
-      browser.setValue('input[id="password"]', password);
-      browser.click("button=Submit");
+      console.log("==========> browserName: ", browser.desiredCapabilities.browserName);
+      if (browser.desiredCapabilities.browserName === "internet explorer") {
+        browser.reload();
+        browser.pause(10000);
+        browser.click('input[id="username"]');
+        browser.keys(username);
+        browser.click('input[id="password"]');
+        browser.keys(password);
+        browser.saveScreenshot('./screenshots/after.javascript.set.png');
+        let length_of_submit = browser.execute(function() {
+          var eles = document.querySelectorAll('button[type="submit"]');
+          eles[0].click();
+          return eles.length;
+        });
+        console.log('===============> submit button length:', length_of_submit);
+        //browser.click("button=Submit");
+        browser.pause(1000);
+        browser.saveScreenshot('./screenShots/after.click.submit.png')
+      } else {
+        browser.execute(function () {
+          return location.reload();
+        });
+        browser.pause(8000);
+        browser.setValue('input[id="username"]', username);
+        browser.setValue('input[id="password"]', password);
+        browser.click("button=Submit");
+      }
     }
     browser.waitForExist("div*=Show All Patients", Constants.wait);
 
