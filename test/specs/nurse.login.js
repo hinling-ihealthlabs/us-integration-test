@@ -15,6 +15,7 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
 
   it('enter nurse username and password', function(){
     browser.saveScreenshot('./screenshots/ie.before.everything.png');
+    browser.pause(6000);
     browser.setValue('input[id="username"]', username);
     browser.setValue('input[id="password"]', password);
     browser.saveScreenshot('./screenshots/ie.login.png');
@@ -26,7 +27,9 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
       console.log("==========> reloading...");
       console.log("==========> browserName: ", browser.desiredCapabilities.browserName);
       if (browser.desiredCapabilities.browserName === "internet explorer") {
-        browser.reload();
+        browser.execute(function () {
+          return location.reload();
+        });
         browser.pause(10000);
         browser.click('input[id="username"]');
         browser.keys(username);
@@ -60,7 +63,7 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
     browser.waitForExist("div#left-nav-content a.item", Constants.wait);
     ele = browser.elements('div#left-nav-content a.item').value;
     ele[0].click();
-    browser.waitForExist("button.edit-save-button");
+    browser.waitForExist("a.edit-save-button-link");
   });
 
   it('check Medicare Id, name, age, birthday, phone, address, notes, diagnosis & care plan, latest measurements, and alerts', function(){

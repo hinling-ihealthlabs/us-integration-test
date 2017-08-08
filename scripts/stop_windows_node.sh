@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 ## get status of the instance
 profile=$1;
+workspaceId=$2;
 echo "aws profile being used: $profile";
-state=$(aws workspaces describe-workspaces --profile $profile | grep State);
+echo "workspaces id: $workspaceId";
+state=$(aws workspaces describe-workspaces --workspace-ids $workspaceId --profile $profile | grep State);
 available="AVAILABLE";
 stopped="STOPPED";
 stopping="STOPPING";
@@ -17,7 +19,7 @@ elif [[ $state =~ "$stopping" ]]; then
   do
     date;
     sleep 3;
-    state=$(aws workspaces describe-workspaces --profile $profile | grep State);
+    state=$(aws workspaces describe-workspaces --workspace-ids $workspaceId --profile $profile | grep State);
     echo "State: $state";
     if [[ $state =~ "$stopped" ]]; then
       echo "instance is stopped: $state";
@@ -30,12 +32,12 @@ elif [[ $state =~ "$stopping" ]]; then
   fi
 elif [[ $state =~ "$available" ]]; then
   echo "instance state is $state, stopping it now";
-  aws workspaces stop-workspaces --stop-workspace-requests WorkspaceId=ws-7wcdrl9h4 --profile $profile;
+  aws workspaces stop-workspaces --stop-workspace-requests WorkspaceId=$workspaceId --profile $profile;
   for i in `seq 100`
   do
     date;
     sleep 3;
-    state=$(aws workspaces describe-workspaces --profile $profile | grep State);
+    state=$(aws workspaces describe-workspaces --workspace-ids $workspaceId --profile $profile | grep State);
     echo "State: $state";
     if [[ $state =~ "$stopped" ]]; then
       echo "instance is stopped: $state";
@@ -52,7 +54,7 @@ elif [[ $state =~ "$starting" ]]; then
   do
     date;
     sleep 3;
-    state=$(aws workspaces describe-workspaces --profile $profile | grep State);
+    state=$(aws workspaces describe-workspaces --workspace-ids $workspaceId --profile $profile | grep State);
     echo "State: $state";
     if [[ $state =~ "$available" ]]; then
       echo "instance is available now: $state. just keep it running for now";
