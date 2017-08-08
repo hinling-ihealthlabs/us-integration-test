@@ -4,7 +4,7 @@ profile=$1;
 workspaceId=$2;
 echo "aws profile being used: $profile";
 echo "workspaces id: $workspaceId";
-state=$(aws workspaces describe-workspaces --profile $profile | grep State);
+state=$(aws workspaces describe-workspaces --workspace-ids $workspaceId --profile $profile | grep State);
 available="AVAILABLE";
 stopped="STOPPED";
 stopping="STOPPING";
