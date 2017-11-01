@@ -17,13 +17,20 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
     browser.saveScreenshot('./screenshots/ie.before.everything.png');
     browser.pause(6000);
     browser.setValue('input[id="username"]', username);
+    browser.pause(1000);
     browser.setValue('input[id="password"]', password);
+    browser.pause(1000);
     browser.saveScreenshot('./screenshots/ie.login.png');
-    browser.click("button=Submit");
+    //browser.click("button=Submit");
+    let length_of_submit = browser.execute(function() {
+      var eles = document.querySelectorAll('button[type="submit"]');
+      eles[0].click();
+      return eles.length;
+    });
     browser.saveScreenshot('./screenshots/ie.aftersubmit.png');
     browser.pause(10000);
-    console.log("=============> Show all Patients", browser.isVisible('div*=Show All Patients'));
-    if (browser.isVisible('div*=Show All Patients') === false) {
+    console.log("=============> Show all Patients", browser.isExisting('div*=Show All Patients'));
+    if (browser.isExisting('div*=Show All Patients') === false) {
       console.log("==========> reloading...");
       console.log("==========> browserName: ", browser.desiredCapabilities.browserName);
       if (browser.desiredCapabilities.browserName === "internet explorer") {
@@ -32,10 +39,10 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
         });
         browser.pause(10000);
         browser.click('input[id="username"]');
-        browser.keys(username);
-        browser.click('input[id="password"]');
-        browser.keys(password);
-        browser.saveScreenshot('./screenshots/after.javascript.set.png');
+        browser.setValue('input[id="username"]', username);
+        browser.pause(1000);
+        browser.setValue('input[id="password"]', password);
+        browser.pause(1000);
         let length_of_submit = browser.execute(function() {
           var eles = document.querySelectorAll('button[type="submit"]');
           eles[0].click();
@@ -44,7 +51,6 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
         console.log('===============> submit button length:', length_of_submit);
         //browser.click("button=Submit");
         browser.pause(1000);
-        browser.saveScreenshot('./screenShots/after.click.submit.png')
       } else {
         browser.execute(function () {
           return location.reload();
@@ -60,7 +66,9 @@ describe('NA-16 -- login as nurse and check patient details page', function(){
   });
 
   it('click the first patient on the right side patient nav bar', function(){
+    browser.pause(1000);
     browser.waitForExist("div#left-nav-content a.item", Constants.wait);
+    browser.pause(1000);
     ele = browser.elements('div#left-nav-content a.item').value;
     ele[0].click();
     browser.waitForExist("a.edit-save-button-link");
