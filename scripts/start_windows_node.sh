@@ -17,7 +17,7 @@ if [[ $state =~ "$available" ]]; then
 elif [[ $state =~ "$stopped" ]]; then ## if State is stopped, start the workspace instance
    aws workspaces start-workspaces --start-workspace-requests WorkspaceId=$workspaceId --profile $profile;
    ## wait for the State to change to Available for 5 mins
-   for i in `seq 100`
+   for i in `seq 50`
     do
       date;
       sleep 3;
@@ -29,8 +29,14 @@ elif [[ $state =~ "$stopped" ]]; then ## if State is stopped, start the workspac
       fi
     done
     if [[ $state != *"$available"* ]]; then
-      echo "we waited 5 mins but the instance is still not coming up so non-zero exit";
-      exit -1;
+      echo "we waited 5 mins but the instance is still not coming up. let's try to curl selenium hub...";
+      hub_running=`curl ${selenium_grid_url} | grep Capabilities`;
+      if [[ $hub_running ]]; then
+        echo "hub is running. let start the tests.";
+      else
+        echo "node is not running. non-zero exit";
+        exit -1;
+      fi
     fi
 elif [[ $state =~ "$stopping" ]]; then ## if State is stopping, wait for it to become Stopped, then start the workspace instance
    ## wait for the State to change to Stopped 3 mins
