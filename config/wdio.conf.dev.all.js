@@ -1,7 +1,7 @@
 'use strict'
 const base = require('./wdio.conf.base.js');
 exports.config = Object.assign(base.config, {
-  host: '52.41.120.147',
+  host: '34.214.117.20',
   port: 32769,
   capabilities: [{
       browserName: 'firefox',
